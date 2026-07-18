@@ -263,7 +263,7 @@ a:hover {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
-  transform: translateY(-100%);
+  transform: translateY(0);
   transition: transform 0.4s ease;
 }
 .nav.visible {
@@ -498,7 +498,8 @@ li.nav-submenu-group:not(:first-child) {
 
 .hero .sub-tagline {
   font-size: 1rem;
-  color: var(--text2);
+  color: var(--text);
+  font-weight: 700;
   margin-bottom: 36px;
 }
 

@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const float majorLineFrequency = 5.0;
         const float minorLineFrequency = 1.0;
         const float scale = 5.0;
-        const vec4 lineColor = vec4(0.96, 0.65, 0.14, 1.0);
+        const vec4 lineColor = vec4(0.82, 0.50, 0.06, 1.0);
         const float minLineWidth = 0.01;
         const float maxLineWidth = 0.2;
         const float lineSpeed = 1.0 * overallSpeed;
@@ -233,8 +233,8 @@ document.addEventListener('DOMContentLoaded', () => {
           space.x += random(space.y * warpFrequency + iTime * warpSpeed + 2.0) * warpAmplitude * horizontalFade;
 
           vec4 lines = vec4(0.0);
-          vec4 bgColor1 = vec4(0.055, 0.085, 0.15, 1.0);
-          vec4 bgColor2 = vec4(0.09, 0.11, 0.20, 1.0);
+          vec4 bgColor1 = vec4(0.953, 0.933, 0.886, 1.0);
+          vec4 bgColor2 = vec4(0.925, 0.898, 0.835, 1.0);
 
           for(int l = 0; l < linesPerGroup; l++) {
             float normalizedLineIndex = float(l) / float(linesPerGroup);

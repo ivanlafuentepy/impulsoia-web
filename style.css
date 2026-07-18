@@ -6,20 +6,20 @@
 
 /* ── Variables ── */
 :root {
-  --bg: #0F1626;
-  --bg2: #131C30;
-  --bg3: #18213A;
-  --bg-card: #1B2440;
-  --accent: #F5A524;
-  --accent-light: #F7B94E;
-  --accent-dark: #C97A08;
-  --gold: #c9a84c;
-  --green: #25D366;
-  --text: #F2F4F8;
-  --text2: #9AA6BF;
-  --text3: #63708F;
-  --border: rgba(245, 165, 36, 0.14);
-  --glow: rgba(245, 165, 36, 0.22);
+  --bg: #F3EEE2;
+  --bg2: #FBF8F0;
+  --bg3: #ECE5D5;
+  --bg-card: #FFFFFF;
+  --accent: #C2760A;
+  --accent-light: #E29327;
+  --accent-dark: #99590A;
+  --gold: #b08a2e;
+  --green: #128A3E;
+  --text: #1C2334;
+  --text2: #55607A;
+  --text3: #8B93A6;
+  --border: rgba(194, 118, 10, 0.20);
+  --glow: rgba(194, 118, 10, 0.16);
   --radius: 12px;
 }
 

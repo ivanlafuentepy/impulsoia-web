@@ -1,0 +1,15 @@
+# Cloudflare Pages — control de caché
+# El HTML siempre se revalida (así los cambios llegan al instante, sin caché vieja en el celular).
+# CSS/JS/imágenes cachean largo: ya usan ?v= para romper caché cuando cambian.
+
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.js
+  Cache-Control: public, max-age=31536000, immutable

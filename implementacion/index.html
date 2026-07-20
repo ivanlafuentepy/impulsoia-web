@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F3EEE2">
+<title>Impulso IA | Prepará tu agente</title>
+<meta name="description" content="Contanos de tu empresa y preparamos tu agente de IA a medida. Impulso IA — Iván Lafuente.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="../assets/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F3EEE2; --cream2:#EDE6D6; --ink:#26221b; --ink2:#5a5245;
+    --amber:#F5A524; --amber-dark:#d98a12; --line:#e0d8c7; --card:#fffdf8;
+    --green:#25D366; --shadow:0 8px 30px rgba(60,45,15,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto;padding:0 20px}
+  a{color:var(--amber-dark)}
+
+  /* HERO */
+  .hero{padding:56px 0 40px;text-align:center;background:
+    radial-gradient(1200px 400px at 50% -10%, rgba(245,165,36,.16), transparent 60%);}
+  .brand{font-weight:800;letter-spacing:.08em;color:var(--amber-dark);font-size:.85rem;text-transform:uppercase}
+  .hero h1{font-size:clamp(1.9rem,6vw,2.9rem);line-height:1.12;margin:14px 0 10px;font-weight:800;letter-spacing:-.02em}
+  .hero h1 .amber{color:var(--amber-dark)}
+  .hero p.lead{font-size:clamp(1.05rem,3vw,1.25rem);color:var(--ink2);max-width:560px;margin:0 auto}
+
+  /* VALOR */
+  .valor{padding:8px 0 8px}
+  .valor .box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 22px;margin:14px 0;box-shadow:var(--shadow)}
+  .valor .box h3{font-size:1.12rem;margin-bottom:6px;display:flex;gap:9px;align-items:center}
+  .valor .box p{color:var(--ink2);font-size:.98rem}
+  .grid2{display:grid;gap:14px}
+  @media(min-width:620px){.grid2{grid-template-columns:1fr 1fr}}
+
+  .inversion{background:linear-gradient(135deg,#2a2419,#3a3120);color:#f4eede;border-radius:18px;padding:24px;margin:20px 0;text-align:center}
+  .inversion .n{font-size:1.7rem;font-weight:800;color:#ffd27a}
+  .inversion .sub{color:#cdbfa3;font-size:.92rem;margin-top:6px}
+
+  /* FORM */
+  form{padding:10px 0 40px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin:16px 0;box-shadow:var(--shadow)}
+  .step h2{font-size:1.15rem;margin-bottom:4px;display:flex;gap:9px;align-items:center}
+  .step .hint{color:var(--ink2);font-size:.9rem;margin-bottom:14px}
+  .q{margin:16px 0}
+  .q label{display:block;font-weight:600;margin-bottom:6px;font-size:.98rem}
+  .q .aclara{font-weight:400;color:var(--ink2);font-size:.86rem}
+  input[type=text],input[type=tel],input[type=email],textarea,select{
+    width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;
+    font:inherit;color:var(--ink);background:#fff;transition:border-color .15s}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--amber)}
+  textarea{min-height:96px;resize:vertical}
+  .chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:4px}
+  .chip{position:relative}
+  .chip input{position:absolute;opacity:0;pointer-events:none}
+  .chip span{display:inline-block;padding:9px 14px;border:1.5px solid var(--line);border-radius:999px;
+    font-size:.92rem;cursor:pointer;background:#fff;transition:all .12s;user-select:none}
+  .chip input:checked + span{background:var(--amber);border-color:var(--amber);color:#2a2419;font-weight:600}
+  .req{color:var(--amber-dark)}
+
+  .enviar{position:sticky;bottom:0;padding:16px 0;background:linear-gradient(to top,var(--cream) 60%,transparent)}
+  .btn{display:block;width:100%;padding:16px;border:none;border-radius:14px;font:inherit;font-weight:700;
+    font-size:1.05rem;cursor:pointer;background:var(--green);color:#fff;box-shadow:0 6px 20px rgba(37,211,102,.35)}
+  .btn:active{transform:translateY(1px)}
+  .aviso{font-size:.82rem;color:var(--ink2);text-align:center;margin-top:10px}
+  .err{color:#c0392b;font-size:.85rem;margin-top:6px;display:none}
+  footer{text-align:center;color:var(--ink2);font-size:.82rem;padding:24px 0 40px}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="brand">Impulso IA · Iván Lafuente</div>
+    <h1>Tu empresa, con un <span class="amber">agente de IA</span> trabajando</h1>
+    <p class="lead">No te vendo un robot. Me quedo adentro de tu empresa hasta que la IA te haga ganar plata. Contame de tu negocio y preparo tu agente a medida.</p>
+  </div>
+</section>
+
+<section class="valor">
+  <div class="wrap">
+    <div class="grid2">
+      <div class="box"><h3>🤖 Tu agente a medida</h3><p>Armado con tus productos, tus precios y tu forma de hablar. Atiende, responde, agenda y hace seguimiento — 24 horas, sin sueldo.</p></div>
+      <div class="box"><h3>🎓 Yo, adentro</h3><p>No te dejo el agente y desaparezco. Me quedo con vos y tu equipo hasta que lo sepan usar y veas el ahorro en números.</p></div>
+      <div class="box"><h3>📊 Reporte semanal</h3><p>Cada semana el resumen de lo que hizo tu agente: cuántas consultas atendió, qué te preguntaron y qué conviene mejorar.</p></div>
+      <div class="box"><h3>🤝 Los viernes en la casona</h3><p>Dos viernes al mes, merienda con todas las empresas de la cartera Impulso IA. Aprendemos entre todos y crecemos juntos.</p></div>
+    </div>
+    <div class="inversion">
+      <div class="n">USD 700 + USD 100 / mes</div>
+      <div class="sub">Implementación + acompañamiento, reporte y los encuentros. El consumo de tu agente va a tu nombre — vos ves cuánto gasta, yo no cobro nada de eso.</div>
+    </div>
+    <p style="text-align:center;color:var(--ink2);font-size:.95rem;margin:6px 0 4px">Completá esto (unos 10 minutos). Mientras más concreto seas, mejor te queda el agente. 👇</p>
+  </div>
+</section>
+
+<div class="wrap">
+<form id="f">
+
+  <div class="step">
+    <h2>1 · Tu empresa</h2>
+    <div class="q"><label>Nombre de la empresa <span class="req">*</span></label><input type="text" name="empresa" required></div>
+    <div class="q"><label>Tu nombre y rol <span class="req">*</span></label><input type="text" name="contacto" placeholder="Ej: Rossana, dueña" required></div>
+    <div class="q"><label>WhatsApp de contacto <span class="req">*</span></label><input type="tel" name="whatsapp" placeholder="Ej: 0981 123456" required></div>
+  </div>
+
+  <div class="step">
+    <h2>2 · Cómo atendés hoy</h2>
+    <div class="hint">La foto real de tu empresa. Sé honesto — esto define qué automatizamos primero.</div>
+    <div class="q"><label>¿Por dónde te escriben los clientes?</label>
+      <div class="chips" data-multi>
+        <label class="chip"><input type="checkbox" name="canales" value="WhatsApp"><span>WhatsApp</span></label>
+        <label class="chip"><input type="checkbox" name="canales" value="Instagram"><span>Instagram</span></label>
+        <label class="chip"><input type="checkbox" name="canales" value="Messenger"><span>Messenger</span></label>
+        <label class="chip"><input type="checkbox" name="canales" value="Llamadas"><span>Llamadas</span></label>
+        <label class="chip"><input type="checkbox" name="canales" value="Presencial"><span>Presencial</span></label>
+      </div>
+    </div>
+    <div class="q"><label>¿Cuántas consultas recibís por día?</label>
+      <select name="volumen"><option value="">Elegí…</option><option>Menos de 5</option><option>5 a 15</option><option>15 a 40</option><option>40 a 100</option><option>Más de 100</option></select></div>
+    <div class="q"><label>¿Quién contesta?</label><input type="text" name="quien" placeholder="Ej: solo yo / un empleado / nos turnamos"></div>
+    <div class="q"><label>¿En qué horario contestan de verdad?</label><input type="text" name="horario" placeholder="Ej: 8 a 18, y a veces de noche desde el celu"></div>
+    <div class="q"><label>¿Cuántas consultas sentís que se pierden por semana?</label>
+      <select name="perdidas"><option value="">Elegí…</option><option>Ninguna</option><option>1 a 5</option><option>5 a 20</option><option>Más de 20</option><option>No tengo idea</option></select></div>
+  </div>
+
+  <div class="step">
+    <h2>3 · Qué vendés</h2>
+    <div class="hint">Esto es la materia prima del agente. Cuanto más completo, mejor responde.</div>
+    <div class="q"><label>Tus productos o servicios principales, con precio <span class="req">*</span></label>
+      <textarea name="productos" placeholder="Ej: Batería de auto 12V — 350.000 Gs. Cambio a domicilio — 50.000 Gs…" required></textarea></div>
+    <div class="q"><label>Datos duros del negocio</label>
+      <textarea name="datos" placeholder="Dirección, horario de atención, zona de entrega, tiempo de entrega, cómo cobrás (transferencia/tarjeta/efectivo)…"></textarea></div>
+    <div class="q"><label>¿Qué NO hacés o no vendés, aunque te lo pidan seguido? <span class="aclara">(evita que el agente invente)</span></label>
+      <textarea name="no_hago" placeholder="Ej: no hago envíos al interior, no vendo repuestos usados…"></textarea></div>
+  </div>
+
+  <div class="step">
+    <h2>4 · Las preguntas reales <span style="font-size:.8rem;color:var(--amber-dark)">(el corazón)</span></h2>
+    <div class="hint">Esta parte es la que hace que el agente hable como vos. Tomate el tiempo.</div>
+    <div class="q"><label>Pegá las preguntas que más te hacen tus clientes, tal cual te las escriben <span class="req">*</span></label>
+      <textarea name="faq_preguntas" placeholder="1) ¿Cuánto sale…?&#10;2) ¿Hacen envío?&#10;3) ¿Están abiertos ahora?&#10;… (mínimo 5)" required></textarea></div>
+    <div class="q"><label>Ahora escribí cómo respondés vos cada una <span class="req">*</span></label>
+      <textarea name="faq_respuestas" placeholder="Con tus palabras, como le contestás a un cliente. Si preferís, mandame 3 capturas de conversaciones típicas por WhatsApp." required></textarea></div>
+    <div class="q"><label>¿Qué consulta NO querés que conteste el bot y prefieras que te la pase a vos?</label>
+      <input type="text" name="derivar" placeholder="Ej: reclamos, presupuestos grandes…"></div>
+  </div>
+
+  <div class="step">
+    <h2>5 · Por dónde arrancamos</h2>
+    <div class="hint">Tu agente base ya atiende y hace seguimiento. Queremos saber hacia dónde seguimos después.</div>
+    <div class="q"><label>¿Qué parte de tu empresa te genera hoy más desorden, trabajo repetitivo o pérdida de plata? <span class="req">*</span></label>
+      <textarea name="dolor" placeholder="Contalo como se lo contarías a un amigo, sin pensar en tecnología." required></textarea></div>
+    <div class="q"><label>Marcá los sectores donde te gustaría meter IA, en orden de urgencia:</label>
+      <div class="chips" data-multi>
+        <label class="chip"><input type="checkbox" name="sectores" value="Papeles y administración"><span>📋 Papeles y administración</span></label>
+        <label class="chip"><input type="checkbox" name="sectores" value="La plata / finanzas"><span>💰 La plata</span></label>
+        <label class="chip"><input type="checkbox" name="sectores" value="Redes y contenido"><span>📱 Redes y contenido</span></label>
+        <label class="chip"><input type="checkbox" name="sectores" value="Stock"><span>📦 Stock</span></label>
+        <label class="chip"><input type="checkbox" name="sectores" value="Compras y proveedores"><span>🛒 Compras y proveedores</span></label>
+        <label class="chip"><input type="checkbox" name="sectores" value="Organizar el equipo"><span>👥 Organizar el equipo</span></label>
+        <label class="chip"><input type="checkbox" name="sectores" value="Dónde está la información"><span>🗂️ Dónde está la info</span></label>
+        <label class="chip"><input type="checkbox" name="sectores" value="Saber cómo va el negocio"><span>📊 Cómo va el negocio</span></label>
+        <label class="chip"><input type="checkbox" name="sectores" value="Entregas"><span>🚚 Entregas</span></label>
+      </div>
+    </div>
+    <div class="q"><label>Al terminar la primera semana, ¿qué tendría que haber pasado para que digas "esto lo quiero sí o sí"? <span class="req">*</span></label>
+      <textarea name="exito" placeholder="La pregunta más importante. Sé concreto: 'que ningún cliente quede sin respuesta', 'que recupere ventas perdidas'…" required></textarea></div>
+  </div>
+
+  <div class="step">
+    <h2>6 · Para armar el agente</h2>
+    <div class="hint">Un par de datos técnicos que definen si la prueba es viable.</div>
+    <div class="q"><label>El WhatsApp de la prueba, ¿es el mismo que usás personalmente?</label>
+      <select name="wa_personal"><option value="">Elegí…</option><option>Sí, es mi número personal</option><option>No, es un número aparte del negocio</option></select></div>
+    <div class="q"><label>¿Está en WhatsApp Business?</label>
+      <select name="wa_business"><option value="">Elegí…</option><option>Sí</option><option>No</option><option>No sé</option></select></div>
+    <div class="q"><label>¿Usás algún sistema hoy? ¿Tenés web, catálogo o Instagram?</label>
+      <input type="text" name="sistemas" placeholder="Ej: Excel, cuaderno, un sistema de facturación… + link de Instagram/web"></div>
+    <div class="q"><label>¿Quién es el responsable de la prueba y podés dedicarle 15 min por día a revisarla?</label>
+      <input type="text" name="compromiso" placeholder="Ej: yo misma, sí puedo / mi empleado Juan, algunos días"></div>
+  </div>
+
+  <div class="enviar">
+    <button type="submit" class="btn">Enviar y preparar mi agente →</button>
+    <div class="err" id="err">Completá los campos marcados con <span class="req">*</span> antes de enviar.</div>
+    <p class="aviso">Al enviar se abre tu WhatsApp con el resumen listo para mandarme. Si tenés catálogo, PDFs o audios explicando cómo trabajás, mandámelos por WhatsApp aparte 🙌</p>
+  </div>
+
+</form>
+</div>
+
+<footer>Impulso IA · Iván Lafuente · Asunción, Paraguay</footer>
+
+<script>
+(function(){
+  var WA = "595982790407";
+  var form = document.getElementById("f");
+  var err = document.getElementById("err");
+
+  function val(name){
+    var el = form.elements[name];
+    if(!el) return "";
+    if(el.length && el[0] && el[0].type === "checkbox"){
+      return Array.prototype.filter.call(el, function(c){return c.checked}).map(function(c){return c.value}).join(", ");
+    }
+    return (el.value || "").trim();
+  }
+  // checkboxes con el mismo name devuelven RadioNodeList: manejar aparte
+  function multi(name){
+    var out = [];
+    form.querySelectorAll('input[name="'+name+'"]:checked').forEach(function(c){out.push(c.value)});
+    return out.join(", ");
+  }
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    err.style.display = "none";
+    var faltan = [];
+    form.querySelectorAll("[required]").forEach(function(el){
+      if(!el.value.trim()){ faltan.push(el); }
+    });
+    if(faltan.length){
+      err.style.display = "block";
+      faltan[0].focus();
+      faltan[0].scrollIntoView({behavior:"smooth", block:"center"});
+      return;
+    }
+
+    var L = [];
+    L.push("*NUEVA POSTULACIÓN — IMPULSO IA*");
+    L.push("");
+    L.push("*Empresa:* " + val("empresa"));
+    L.push("*Contacto:* " + val("contacto"));
+    L.push("*WhatsApp:* " + val("whatsapp"));
+    L.push("");
+    L.push("*— Cómo atiende hoy —*");
+    L.push("Canales: " + (multi("canales")||"—"));
+    L.push("Consultas/día: " + (val("volumen")||"—"));
+    L.push("Quién contesta: " + (val("quien")||"—"));
+    L.push("Horario real: " + (val("horario")||"—"));
+    L.push("Se pierden/semana: " + (val("perdidas")||"—"));
+    L.push("");
+    L.push("*— Qué vende —*");
+    L.push("Productos/precios: " + val("productos"));
+    L.push("Datos duros: " + (val("datos")||"—"));
+    L.push("Lo que NO hace: " + (val("no_hago")||"—"));
+    L.push("");
+    L.push("*— Preguntas reales —*");
+    L.push("Preguntas frecuentes: " + val("faq_preguntas"));
+    L.push("Cómo responde: " + val("faq_respuestas"));
+    L.push("A derivar: " + (val("derivar")||"—"));
+    L.push("");
+    L.push("*— Por dónde arrancar —*");
+    L.push("Mayor dolor: " + val("dolor"));
+    L.push("Sectores: " + (multi("sectores")||"—"));
+    L.push("Éxito 1ª semana: " + val("exito"));
+    L.push("");
+    L.push("*— Técnico —*");
+    L.push("WA personal: " + (val("wa_personal")||"—"));
+    L.push("WA Business: " + (val("wa_business")||"—"));
+    L.push("Sistemas/redes: " + (val("sistemas")||"—"));
+    L.push("Responsable: " + (val("compromiso")||"—"));
+
+    var texto = L.join("\n");
+    var url = "https://wa.me/" + WA + "?text=" + encodeURIComponent(texto);
+    window.location.href = url;
+  });
+})();
+</script>
+</body>
+</html>

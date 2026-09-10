@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F3EEE2">
+<title>Gráfica Cicero — Puesta en marcha de tu Agente IA</title>
+<meta name="description" content="Todo lo necesario para poner en marcha el Agente IA de Gráfica Cicero SRL.">
+<!-- Página privada: no debe indexarse. Tiene montos del presupuesto. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
+<link rel="icon" href="../assets/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F3EEE2; --card:#fffdf8; --ink:#26221b; --ink2:#5a5245; --ink3:#8b8173;
+    --amber:#F5A524; --amber-dark:#d98a12; --amber-soft:#fdf0d8;
+    --line:#e5ddcd; --green:#2f8f4e; --green-soft:#e8f5ec;
+    --blue:#2c5d87; --blue-soft:#e6eef5;
+    --shadow:0 2px 10px rgba(90,74,40,.06); --shadow-lg:0 10px 34px rgba(90,74,40,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--cream);color:var(--ink);
+    line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px}
+
+  /* ── Encabezado ─────────────────────────────────────────── */
+  header{padding:48px 0 30px;text-align:center}
+  header img{width:min(52%,180px);height:auto;margin:0 auto 26px;display:block;
+    filter:drop-shadow(0 8px 26px rgba(245,165,36,.22))}
+  .eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--amber-dark);margin-bottom:10px}
+  h1{font-size:clamp(1.7rem,5vw,2.5rem);font-weight:800;letter-spacing:-.02em;line-height:1.18}
+  .lead{color:var(--ink2);margin-top:14px;font-size:1.05rem;max-width:560px;margin-left:auto;margin-right:auto}
+
+  /* ── Bloques ────────────────────────────────────────────── */
+  section{margin:38px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:26px;box-shadow:var(--shadow)}
+  h2{font-size:1.3rem;font-weight:800;letter-spacing:-.01em;margin-bottom:6px}
+  h2 .num{color:var(--amber-dark)}
+  .sub{color:var(--ink2);font-size:.95rem;margin-bottom:20px}
+
+  /* ── Cifras del acuerdo ─────────────────────────────────── */
+  .cifras{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px}
+  .cifra{background:var(--amber-soft);border:1px solid #f0dcb4;border-radius:14px;padding:18px}
+  .cifra .lbl{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber-dark)}
+  .cifra .val{font-size:1.45rem;font-weight:800;margin-top:6px;letter-spacing:-.01em}
+  .cifra .det{font-size:.85rem;color:var(--ink2);margin-top:2px}
+
+  .docs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+  a.doc{display:flex;align-items:center;gap:13px;text-decoration:none;color:var(--ink);
+    background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 17px;
+    transition:border-color .18s,transform .18s,box-shadow .18s}
+  a.doc:hover{border-color:var(--amber);transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+  a.doc .ico{font-size:1.5rem;line-height:1;flex-shrink:0}
+  a.doc .t{font-weight:700;font-size:.94rem;line-height:1.3}
+  a.doc .s{font-size:.8rem;color:var(--ink3)}
+
+  /* ── Pasos ──────────────────────────────────────────────── */
+  .pasos{display:grid;gap:14px}
+  .paso{display:flex;gap:15px;align-items:flex-start}
+  .paso .n{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:var(--amber);
+    color:#2a2419;font-weight:800;font-size:.92rem;display:flex;align-items:center;justify-content:center}
+  .paso .tit{font-weight:700}
+  .paso .txt{color:var(--ink2);font-size:.93rem}
+
+  /* ── Datos que ya tenemos ───────────────────────────────── */
+  .datos{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0 22px}
+  .dato{padding:11px 0;border-bottom:1px dashed var(--line)}
+  .dato .k{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+  .dato .v{font-weight:600;font-size:.95rem;margin-top:2px}
+
+  .aviso{background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 10px 10px 0;
+    padding:14px 16px;font-size:.92rem;color:#2b4a63;margin-top:18px}
+  .aviso b, .aviso strong{color:#1d3a52}
+
+  /* ── Formulario ─────────────────────────────────────────── */
+  .barra{position:sticky;top:0;z-index:20;background:rgba(243,238,226,.94);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:11px 0;margin-bottom:22px}
+  .barra .wrap{display:flex;align-items:center;gap:14px}
+  .prog{flex:1;height:7px;background:#e8e0d0;border-radius:99px;overflow:hidden}
+  .prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--amber),var(--amber-dark));
+    border-radius:99px;transition:width .35s ease}
+  .prog-txt{font-size:.8rem;font-weight:700;color:var(--ink2);white-space:nowrap}
+
+  fieldset{border:none;margin-bottom:26px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+  fieldset:last-of-type{border-bottom:none;margin-bottom:8px}
+  legend{font-weight:800;font-size:1.02rem;margin-bottom:3px;display:flex;align-items:center;gap:9px}
+  .clave{background:var(--amber);color:#2a2419;font-size:.62rem;font-weight:800;letter-spacing:.07em;
+    padding:3px 8px;border-radius:99px;text-transform:uppercase}
+  .fs-sub{color:var(--ink2);font-size:.88rem;margin-bottom:16px}
+
+  .campo{margin-bottom:17px}
+  label{display:block;font-weight:600;font-size:.92rem;margin-bottom:5px}
+  .hint{font-weight:400;color:var(--ink3);font-size:.83rem;display:block;margin-top:1px}
+  input[type=text],input[type=email],input[type=tel],textarea{
+    width:100%;font-family:inherit;font-size:.97rem;color:var(--ink);background:#fff;
+    border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;transition:border-color .16s,box-shadow .16s}
+  input:focus,textarea:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(245,165,36,.15)}
+  textarea{resize:vertical;min-height:92px;line-height:1.55}
+  ::placeholder{color:#b9b0a0}
+
+  .acciones{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:24px}
+  button{font-family:inherit;font-size:1rem;font-weight:700;border:none;border-radius:14px;
+    padding:15px 28px;cursor:pointer;transition:transform .16s,box-shadow .16s,background .16s}
+  .btn-envio{background:var(--amber);color:#2a2419;box-shadow:0 4px 14px rgba(245,165,36,.3)}
+  .btn-envio:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 22px rgba(245,165,36,.38)}
+  .btn-envio:disabled{opacity:.55;cursor:not-allowed;transform:none}
+  .guardado{font-size:.85rem;color:var(--ink3)}
+  .guardado.on{color:var(--green);font-weight:600}
+
+  .resultado{margin-top:18px;padding:16px 18px;border-radius:12px;font-size:.94rem;display:none}
+  .resultado.ok{display:block;background:var(--green-soft);border:1px solid #b8dcc4;color:#1e6b38}
+  .resultado.err{display:block;background:#fdecec;border:1px solid #f2c4c4;color:#9c2b2b}
+
+  /* ── WhatsApp / reunión ─────────────────────────────────── */
+  .lista{list-style:none;display:grid;gap:11px}
+  .lista li{display:flex;gap:11px;align-items:flex-start;font-size:.95rem}
+  .lista li .b{flex-shrink:0;color:var(--amber-dark);font-weight:800}
+  a.btn-wa{display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;
+    text-decoration:none;font-weight:700;padding:15px 26px;border-radius:14px;margin-top:20px;
+    box-shadow:0 4px 14px rgba(37,211,102,.3);transition:transform .16s,box-shadow .16s}
+  a.btn-wa:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(37,211,102,.4)}
+
+  footer{text-align:center;padding:40px 0 54px;color:var(--ink3);font-size:.85rem;line-height:1.7}
+  footer a{color:var(--ink2)}
+
+  @media(max-width:560px){
+    header{padding:34px 0 22px}
+    .card{padding:20px;border-radius:15px}
+    .acciones{flex-direction:column;align-items:stretch}
+    button{width:100%}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <img src="../assets/logo-impulso.png" alt="Impulso IA">
+    <div class="eyebrow">Puesta en marcha</div>
+    <h1>El Agente IA de Gráfica Cicero</h1>
+    <p class="lead">Hola Marcya 👋 Acá está todo en un solo lugar: el presupuesto que aceptaste,
+      lo que necesitamos de ustedes y el formulario para pasárnoslo. Podés completarlo de a poco
+      — se guarda solo en este dispositivo.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ═══ 1. EL ACUERDO ═══ -->
+  <section>
+    <div class="card">
+      <h2><span class="num">1.</span> Tu presupuesto</h2>
+      <p class="sub">Propuesta del 3 de septiembre de 2026. Tipo de cambio usado: USD 1 = Gs. 6.000.</p>
+
+      <div class="cifras">
+        <div class="cifra">
+          <div class="lbl">Implementación</div>
+          <div class="val">USD 700</div>
+          <div class="det">Gs. 4.200.000 · pago único</div>
+        </div>
+        <div class="cifra">
+          <div class="lbl">Mensual</div>
+          <div class="val">USD 100</div>
+          <div class="det">Gs. 600.000 · desde el 1/10/2026</div>
+        </div>
+        <div class="cifra">
+          <div class="lbl">Puesta en marcha</div>
+          <div class="val">48 h hábiles</div>
+          <div class="det">desde que llega todo</div>
+        </div>
+      </div>
+
+      <div class="docs">
+        <a class="doc" href="docs/presupuesto-agente-ia.pdf" target="_blank" rel="noopener">
+          <span class="ico">📄</span>
+          <span><span class="t">Presupuesto completo</span><br><span class="s">PDF · 9 páginas · todo lo que incluye</span></span>
+        </a>
+        <a class="doc" href="docs/puesta-en-marcha.pdf" target="_blank" rel="noopener">
+          <span class="ico">📋</span>
+          <span><span class="t">Información necesaria</span><br><span class="s">PDF · 2 páginas · el detalle de lo que sigue</span></span>
+        </a>
+      </div>
+
+      <div class="aviso">
+        El consumo de la API de IA (estimado <b>USD 5 a 10 por mes</b> para 10–30 clientes por día)
+        va aparte del mensual y se cobra según el uso real. Lo vas a poder ver día por día
+        desde tu panel de control.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 2. CÓMO SIGUE ═══ -->
+  <section>
+    <div class="card">
+      <h2><span class="num">2.</span> Cómo sigue</h2>
+      <p class="sub">Tres pasos y Grafo está atendiendo.</p>
+      <div class="pasos">
+        <div class="paso">
+          <div class="n">1</div>
+          <div>
+            <div class="tit">Completás el formulario de acá abajo</div>
+            <div class="txt">Es la información del negocio que Grafo necesita saber para no inventar nada.
+              Lo podés hacer de a ratos: se guarda solo.</div>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="n">2</div>
+          <div>
+            <div class="tit">Nos reunimos 30 minutos por videollamada</div>
+            <div class="txt">Para los accesos a Meta Business y las definiciones que necesitan charla.
+              Coordinamos por WhatsApp cuando tengas el formulario listo.</div>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="n">3</div>
+          <div>
+            <div class="tit">48 horas hábiles y tu agente está funcionando</div>
+            <div class="txt">El plazo arranca cuando estén las tres cosas: propuesta aceptada,
+              pago hecho y toda la información en mano.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 3. LO QUE YA SABEMOS ═══ -->
+  <section>
+    <div class="card">
+      <h2><span class="num">3.</span> Lo que ya tenemos cargado</h2>
+      <p class="sub">Esto salió de la ficha que completaron en julio. Miralo y si algo cambió,
+        corregilo en el formulario (primera pregunta).</p>
+      <div class="datos">
+        <div class="dato"><div class="k">Negocio</div><div class="v">Gráfica Cicero</div></div>
+        <div class="dato"><div class="k">Tu agente se llama</div><div class="v">Grafo</div></div>
+        <div class="dato"><div class="k">Dirección</div><div class="v">Avay (2ª proy.) c/ General Díaz</div></div>
+        <div class="dato"><div class="k">Horario</div><div class="v">Lun a Vie · 07:30 a 18:00</div></div>
+        <div class="dato"><div class="k">Fin de semana</div><div class="v">Cerrado</div></div>
+        <div class="dato"><div class="k">Tono del agente</div><div class="v">Profesional y cordial, de vos</div></div>
+        <div class="dato"><div class="k">Único precio cargado</div><div class="v">Banner de lona — Gs. 410.000</div></div>
+        <div class="dato"><div class="k">Deriva hoy a</div><div class="v">0981 413 380 (Mercedes)</div></div>
+      </div>
+      <div class="aviso">
+        <b>Dos cosas para confirmar sí o sí:</b> (1) el banner de lona es el único precio que tenemos —
+        sin la lista completa, Grafo va a tomar el pedido pero no va a poder cotizar;
+        (2) las derivaciones hoy van al número de Mercedes — decinos si tienen que ir al tuyo.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 4. FORMULARIO ═══ -->
+  <section id="form">
+    <div class="barra">
+      <div class="wrap">
+        <div class="prog"><i id="progBar"></i></div>
+        <div class="prog-txt"><span id="progTxt">0</span> de 15</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span class="num">4.</span> La información de tu negocio</h2>
+      <p class="sub">Ninguna respuesta es obligatoria — mandá lo que tengas y después completamos el resto.
+        Las marcadas <b>CLAVE</b> son las que más cambian lo que Grafo puede resolver solo.</p>
+
+      <form id="onb" novalidate>
+
+        <fieldset>
+          <legend>Quién completa</legend>
+          <div class="campo">
+            <label for="contacto">Tu nombre y rol</label>
+            <input type="text" id="contacto" name="contacto" placeholder="Marcya Acosta — dueña">
+          </div>
+          <div class="campo">
+            <label for="whatsapp">WhatsApp de contacto</label>
+            <input type="tel" id="whatsapp" name="whatsapp" placeholder="0982 804 706">
+          </div>
+          <div class="campo">
+            <label for="email">Email <span class="hint">Para mandarte accesos y la factura</span></label>
+            <input type="email" id="email" name="email" placeholder="nombre@graficacicero.com.py">
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Datos base</legend>
+          <p class="fs-sub">Mirá el bloque 3 de arriba.</p>
+          <div class="campo">
+            <label for="correcciones">¿Hay algo ahí que esté mal o que haya cambiado?
+              <span class="hint">Horario, dirección, el nombre del agente, a quién van las derivaciones… Si está todo bien, escribí "todo correcto".</span></label>
+            <textarea id="correcciones" name="correcciones" placeholder="Ej: el horario los viernes ahora es hasta las 17:00. Las derivaciones tienen que venir a mi número, no al de mi mamá."></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Productos y precios <span class="clave">Clave</span></legend>
+          <p class="fs-sub">Lo más importante de todo. Sin esto Grafo toma el pedido pero no cotiza.</p>
+          <div class="campo">
+            <label for="precios">Lista de productos con precio <b>y cantidad</b>
+              <span class="hint">En imprenta el precio va siempre atado a la cantidad. Grafo tiene prohibido calcular otras cantidades por regla de tres, así que necesitamos los cortes reales: tarjetas x1000, volantes x1000, lonas por m²…</span></label>
+            <textarea id="precios" name="precios" rows="7" placeholder="Tarjetas personales 1000 unidades — Gs. XXX&#10;Tarjetas personales 500 unidades — Gs. XXX&#10;Volantes A5 full color 1000 — Gs. XXX&#10;Lona impresa por m² — Gs. XXX&#10;Banner de lona con porta banner — Gs. 410.000&#10;..."></textarea>
+          </div>
+          <div class="campo">
+            <label for="disenio">¿Diseñan ustedes el arte? ¿Se cobra aparte?
+              <span class="hint">Si el cliente no trae el diseño hecho, ¿qué pasa? ¿Cuánto sale?</span></label>
+            <textarea id="disenio" name="disenio" placeholder="Ej: sí, diseñamos. Diseño simple Gs. XXX, diseño desde cero Gs. XXX. Si el cliente trae el arte listo no se cobra."></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Producción y entrega <span class="clave">Clave</span></legend>
+          <div class="campo">
+            <label for="plazos">¿Cuánto demora cada tipo de trabajo?
+              <span class="hint">Digital suele ser distinto a offset. Es la pregunta que más les repiten.</span></label>
+            <textarea id="plazos" name="plazos" placeholder="Ej: impresión digital 24 a 48 hs. Offset 5 días hábiles. Gran formato 48 hs. Trabajos con troquelado suman 2 días."></textarea>
+          </div>
+          <div class="campo">
+            <label for="arte">¿Cómo tienen que mandar el archivo de arte?
+              <span class="hint">Formato, resolución, sangrado, márgenes, si va en CMYK, si los textos van en curvas.</span></label>
+            <textarea id="arte" name="arte" placeholder="Ej: PDF alta calidad, CMYK, textos en curvas, 3mm de sangrado, 300 dpi mínimo. No aceptamos Word ni Publisher."></textarea>
+          </div>
+          <div class="campo">
+            <label for="senia">¿Piden seña? ¿Cuánto? ¿Cómo se paga?
+              <span class="hint">Métodos que aceptan y condiciones. Ojo: Grafo NO va a compartir datos bancarios salvo que ustedes lo autoricen.</span></label>
+            <textarea id="senia" name="senia" placeholder="Ej: 50% de seña para arrancar, el resto al retirar. Efectivo, transferencia o POS."></textarea>
+          </div>
+          <div class="campo">
+            <label for="entrega">¿Se retira en el local o hacen delivery?
+              <span class="hint">Si hacen envío: zonas y costo.</span></label>
+            <textarea id="entrega" name="entrega" placeholder="Ej: se retira en el local. Envío dentro de Asunción Gs. XXX, Gran Asunción Gs. XXX."></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Las preguntas de siempre <span class="clave">Clave</span></legend>
+          <p class="fs-sub">Tu dolor textual fue <i>"responder las mismas preguntas 100 veces"</i>. Acá las matamos.</p>
+          <div class="campo">
+            <label for="faq">¿Qué les preguntan todos los días por WhatsApp?
+              <span class="hint">Escribilas como te salgan, con la respuesta que dan hoy. Cuantas más pongas, menos te van a molestar.</span></label>
+            <textarea id="faq" name="faq" rows="6" placeholder="— ¿Hacen tarjetas? Sí, en digital y offset.&#10;— ¿Cuánto tardan? …&#10;— ¿Abren los sábados? No.&#10;— ¿Puedo mandar el diseño por WhatsApp? Sí, en PDF.&#10;..."></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Estado de los pedidos</legend>
+          <p class="fs-sub">Para que el cliente pueda preguntar "¿ya está mi pedido?" y Grafo le conteste.</p>
+          <div class="campo">
+            <label for="estados">¿Qué estados puede tener un trabajo?
+              <span class="hint">Los que usan ustedes internamente, con lo que significa cada uno.</span></label>
+            <textarea id="estados" name="estados" placeholder="Ej: Recibido · En diseño · Aprobado por el cliente · En impresión · En terminación · Listo para retirar · Entregado"></textarea>
+          </div>
+          <div class="campo">
+            <label for="comunica">¿Qué le puede decir Grafo al cliente en cada estado?
+              <span class="hint">Y qué NO. Ej: si un trabajo se atrasó por una máquina rota, ¿lo dice o deriva?</span></label>
+            <textarea id="comunica" name="comunica" placeholder="Ej: puede decir en qué etapa está y la fecha estimada. Si hay un problema o atraso, que no invente nada y derive."></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Cuándo llamar a una persona</legend>
+          <div class="campo">
+            <label for="derivacion">¿Quién recibe las derivaciones y cuándo?
+              <span class="hint">Nombre, WhatsApp, horario, y qué consultas tienen que pasar a una persona sí o sí.</span></label>
+            <textarea id="derivacion" name="derivacion" placeholder="Ej: Marcya — 0982 804 706, de 8 a 18. Derivar siempre: reclamos, pedidos grandes de empresas, negociación de precio, urgencias."></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Cómo tiene que hablar Grafo</legend>
+          <div class="campo">
+            <label for="tono">¿Cómo atienden hoy ustedes?
+              <span class="hint">Si podés, pegá 2 o 3 respuestas reales que hayas mandado por WhatsApp esta semana. Es lo que mejor le enseña a copiar tu estilo.</span></label>
+            <textarea id="tono" name="tono" placeholder="Ej: tratamos de vos, somos cordiales pero directos, usamos poco emoji. Ejemplo real: «Buen día! Sí hacemos, mandame el archivo en PDF y te paso el presupuesto en el día»"></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Datos públicos y extras</legend>
+          <div class="campo">
+            <label for="publicos">Datos de contacto que pueden figurar en tu página web
+              <span class="hint">Teléfonos, correo, dirección, horarios, redes sociales.</span></label>
+            <textarea id="publicos" name="publicos" placeholder="Ej: WhatsApp 0982…, cicero@…, Avay c/ General Díaz, Instagram @…"></textarea>
+          </div>
+          <div class="campo">
+            <label for="otros">¿Algo más que Grafo tenga que saber?
+              <span class="hint">Políticas, garantías, lo que NO hacen, clientes especiales, épocas de mucho trabajo… Cualquier cosa que evite que invente.</span></label>
+            <textarea id="otros" name="otros" placeholder="Ej: no hacemos serigrafía sobre tela. En diciembre los plazos se duplican. A los clientes con cuenta corriente no se les pide seña."></textarea>
+          </div>
+        </fieldset>
+
+        <div class="acciones">
+          <button type="submit" class="btn-envio" id="btnEnviar">Enviárselo a Iván</button>
+          <span class="guardado" id="guardado">Se guarda solo mientras escribís</span>
+        </div>
+        <div class="resultado" id="resultado"></div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ═══ 5. POR WHATSAPP ═══ -->
+  <section>
+    <div class="card">
+      <h2><span class="num">5.</span> Los archivos, por WhatsApp</h2>
+      <p class="sub">Esto no entra en un formulario. Mandámelo directo al WhatsApp y listo.</p>
+      <ul class="lista">
+        <li><span class="b">→</span><span><b>El logo de Gráfica Cicero</b> en la mejor calidad que tengan — vectorial (.ai, .eps, .pdf) o PNG grande.</span></li>
+        <li><span class="b">→</span><span><b>2 o 3 fotos de trabajos</b> que estén orgullosos de mostrar. Van en tu página web.</span></li>
+        <li><span class="b">→</span><span><b>La lista de precios</b> si la tienen en Excel o PDF — así no la tipeás de nuevo arriba.</span></li>
+        <li><span class="b">→</span><span><b>Catálogos o materiales</b> comerciales que ya usen.</span></li>
+        <li><span class="b">→</span><span><b>Colores y tipografías</b> de la marca, si los tienen definidos.</span></li>
+      </ul>
+      <a class="btn-wa" href="https://wa.me/595982790407?text=Hola%20Iv%C3%A1n%2C%20soy%20de%20Gr%C3%A1fica%20Cicero.%20Te%20mando%20los%20archivos%20para%20el%20agente." target="_blank" rel="noopener">
+        💬 Mandar los archivos por WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ 6. LA REUNIÓN ═══ -->
+  <section>
+    <div class="card">
+      <h2><span class="num">6.</span> Lo que vemos juntos en la videollamada</h2>
+      <p class="sub">30 minutos, una sola vez. Son las cosas que necesitan a alguien del otro lado en el momento.</p>
+      <ul class="lista">
+        <li><span class="b">→</span><span><b>Los accesos a Meta Business.</b> Te guío paso a paso para darme los permisos sobre tu cuenta.
+          <b>No necesito tu contraseña de Facebook</b> — se hace con permisos, no compartiendo claves.</span></li>
+        <li><span class="b">→</span><span><b>El número de WhatsApp del agente.</b> Definimos cuál usan y conectamos el número.
+          Durante la conexión Meta manda códigos de verificación, así que tiene que estar a mano alguien con permisos de administrador.</span></li>
+        <li><span class="b">→</span><span><b>Cómo toma los pedidos.</b> Recorremos juntos las preguntas que va a hacer según el producto,
+          para que no pregunte de más ni de menos.</span></li>
+        <li><span class="b">→</span><span><b>Los límites de Grafo.</b> Qué decide solo y en qué casos siempre llama a una persona.</span></li>
+        <li><span class="b">→</span><span><b>Quién del equipo entra al panel</b> y cómo se toma una conversación cuando quieran contestar a mano.</span></li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <b>Impulso IA</b> — La IA trabaja. Vos crecés.<br>
+    Iván Lafuente · Asunción, Paraguay<br>
+    <a href="https://wa.me/595982790407">WhatsApp</a> · página privada de Gráfica Cicero SRL
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var form   = document.getElementById("onb");
+  var campos = Array.prototype.slice.call(form.querySelectorAll("input, textarea"));
+  var CLAVE  = "cicero-onboarding-v1";
+
+  // ── Autoguardado local ────────────────────────────────────────────────
+  // Es un formulario largo: nadie lo completa de una sentada. Si se cierra la
+  // pestaña sin esto, se pierde todo y no vuelve a intentarlo.
+  function guardar(){
+    try{
+      var datos = {};
+      campos.forEach(function(c){ if(c.value.trim()) datos[c.name] = c.value; });
+      localStorage.setItem(CLAVE, JSON.stringify(datos));
+      marcarGuardado();
+    }catch(e){ /* modo privado o storage lleno: seguimos sin autoguardado */ }
+  }
+
+  function restaurar(){
+    try{
+      var crudo = localStorage.getItem(CLAVE);
+      if(!crudo) return;
+      var datos = JSON.parse(crudo);
+      campos.forEach(function(c){ if(datos[c.name]) c.value = datos[c.name]; });
+    }catch(e){ /* dato corrupto: arrancamos en blanco */ }
+  }
+
+  var timerGuardado;
+  var elGuardado = document.getElementById("guardado");
+  function marcarGuardado(){
+    elGuardado.textContent = "✓ Guardado en este dispositivo";
+    elGuardado.classList.add("on");
+    clearTimeout(timerGuardado);
+    timerGuardado = setTimeout(function(){
+      elGuardado.textContent = "Se guarda solo mientras escribís";
+      elGuardado.classList.remove("on");
+    }, 2600);
+  }
+
+  // ── Progreso ──────────────────────────────────────────────────────────
+  var barra = document.getElementById("progBar");
+  var txt   = document.getElementById("progTxt");
+  var TOTAL = campos.length;
+
+  function progreso(){
+    var hechos = campos.filter(function(c){ return c.value.trim() !== ""; }).length;
+    barra.style.width = (hechos / TOTAL * 100) + "%";
+    txt.textContent = hechos;
+  }
+
+  campos.forEach(function(c){
+    c.addEventListener("input", function(){
+      progreso();
+      clearTimeout(c._t);
+      c._t = setTimeout(guardar, 700);
+    });
+  });
+
+  // ── Envío ─────────────────────────────────────────────────────────────
+  var btn = document.getElementById("btnEnviar");
+  var res = document.getElementById("resultado");
+
+  form.addEventListener("submit", function(ev){
+    ev.preventDefault();
+
+    var datos = {};
+    campos.forEach(function(c){ datos[c.name] = c.value.trim(); });
+
+    var algo = campos.some(function(c){ return c.value.trim() !== ""; });
+    if(!algo){
+      res.className = "resultado err";
+      res.textContent = "Completá al menos una respuesta antes de enviar.";
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Enviando…";
+    res.className = "resultado";
+    res.textContent = "";
+
+    fetch("/api/onboarding", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(datos)
+    })
+    .then(function(r){ return r.json().then(function(j){ return {ok: r.ok, body: j}; }); })
+    .then(function(r){
+      if(!r.ok || !r.body.ok) throw new Error((r.body && r.body.error) || "No se pudo enviar");
+      res.className = "resultado ok";
+      res.innerHTML = "<b>¡Listo, llegó!</b> Iván ya recibió lo que mandaste. " +
+        "Podés seguir completando lo que falte y volver a enviar cuando quieras — " +
+        "tus respuestas siguen guardadas acá.";
+      btn.textContent = "Enviar de nuevo";
+      btn.disabled = false;
+    })
+    .catch(function(err){
+      res.className = "resultado err";
+      res.innerHTML = "<b>No se pudo enviar.</b> " + (err.message || "") +
+        "<br>Probá de nuevo en un minuto. Si sigue fallando, escribile a Iván por " +
+        "<a href='https://wa.me/595982790407'>WhatsApp</a> — tus respuestas no se perdieron, " +
+        "quedan guardadas en este dispositivo.";
+      btn.textContent = "Reintentar envío";
+      btn.disabled = false;
+    });
+  });
+
+  restaurar();
+  progreso();
+})();
+</script>
+
+</body>
+</html>

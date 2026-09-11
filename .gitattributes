@@ -1,0 +1,8 @@
+# Los binarios NUNCA pasan por conversion de fin de linea: git avisaba
+# "LF will be replaced by CRLF" sobre un PDF y eso corrompe el archivo.
+*.pdf  binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.ico  binary

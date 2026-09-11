@@ -22,9 +22,21 @@ const DORITA   = "https://salsa-soul-dorita-production.up.railway.app";
 
 const MAX_BYTES = 60000;   // el formulario más largo imaginable entra holgado
 
+// Los datos que la landing muestra YA CARGADOS en el campo, para que la persona
+// corrija encima en vez de tener que mirar arriba y describir el cambio abajo.
+// Van todos juntos a una sola columna: llegan siempre completos, no de a uno.
+const BASE = [
+  ["base_negocio",    "Negocio"],
+  ["base_agente",     "Se llama"],
+  ["base_direccion",  "Dirección"],
+  ["base_horario",    "Horario"],
+  ["base_tono",       "Tono"],
+  ["base_derivacion", "Deriva a"],
+  ["base_precio",     "Precio ya cargado"],
+];
+
 // Cada campo del form → su columna en Airtable. El orden es el del Brief.
 const CAMPOS = [
-  ["correcciones",  "Correcciones a los datos base",          "Correcciones a los datos que ya teníamos"],
   ["numero_agente", "Número de WhatsApp del agente",          "El número que va a usar el agente"],
   ["precios",       "Productos y precios",                    "Productos y precios"],
   ["disenio",       "Diseño propio",                          "¿Diseñan ellos? ¿Se cobra aparte?"],
@@ -74,15 +86,33 @@ function ahoraPY() {
   return `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`;
 }
 
+// "Alejandro Acosta" + "socio" → "Alejandro Acosta — socio"
+function quienCompleta(d) {
+  return [d.contacto, d.rol].filter(Boolean).join(" — ");
+}
+
+function datosBase(d) {
+  return BASE.filter(([c]) => d[c]).map(([c, t]) => `${t}: ${d[c]}`).join("\n");
+}
+
 function armarBrief(d, fecha) {
   const L = [];
   L.push(`ONBOARDING — ${EMPRESA}`);
   L.push(`Recibido: ${fecha} (hora de Paraguay)`);
   L.push("");
-  if (d.contacto) L.push(`Completó: ${d.contacto}`);
+  const quien = quienCompleta(d);
+  if (quien)      L.push(`Completó: ${quien}`);
   if (d.whatsapp) L.push(`WhatsApp: ${d.whatsapp}`);
   if (d.email)    L.push(`Email: ${d.email}`);
   L.push("");
+
+  const base = datosBase(d);
+  if (base) {
+    L.push("─".repeat(52));
+    L.push("DATOS BASE (como quedaron después de su revisión)");
+    L.push(base);
+    L.push("");
+  }
 
   for (const [clave, , titulo] of CAMPOS) {
     if (!d[clave]) continue;
@@ -121,7 +151,8 @@ export async function onRequestPost({ request, env }) {
     if (typeof v === "string") d[k] = v.trim().slice(0, 12000);
   }
 
-  const hayAlgo = CAMPOS.some(([c]) => d[c]) || d.contacto || d.whatsapp || d.email;
+  const hayAlgo =
+    CAMPOS.some(([c]) => d[c]) || BASE.some(([c]) => d[c]) || d.contacto || d.whatsapp || d.email;
   if (!hayAlgo) return json({ ok: false, error: "El formulario llegó vacío." }, 400);
 
   if (!env.AIRTABLE_TOKEN) {
@@ -140,7 +171,10 @@ export async function onRequestPost({ request, env }) {
     "Respuestas (JSON)": JSON.stringify(d, null, 2).slice(0, 95000),
     "Pendiente de reunión": PENDIENTE_REUNION,
   };
-  if (d.contacto) fields["Contacto"] = d.contacto;
+  const quien = quienCompleta(d);
+  if (quien) fields["Contacto"] = quien;
+  const base = datosBase(d);
+  if (base) fields["Datos base confirmados"] = base;
   if (d.whatsapp) fields["WhatsApp"] = d.whatsapp;
   if (d.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) fields["Email"] = d.email;
   for (const [clave, columna] of CAMPOS) {

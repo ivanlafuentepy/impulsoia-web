@@ -103,6 +103,10 @@
   input:focus,textarea:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(245,165,36,.15)}
   textarea{resize:vertical;min-height:92px;line-height:1.55}
   ::placeholder{color:#b9b0a0}
+  /* Campos que ya vienen con el dato cargado: se ven distintos para que se
+     entienda de una que son para revisar y corregir, no para llenar de cero. */
+  input.precargado{background:var(--amber-soft);border-color:#f0dcb4;font-weight:600}
+  input.precargado:focus{background:#fff}
 
   .acciones{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:24px}
   button{font-family:inherit;font-size:1rem;font-weight:700;border:none;border-radius:14px;
@@ -144,7 +148,7 @@
     <img src="../assets/logo-impulso.png" alt="Impulso IA">
     <div class="eyebrow">Puesta en marcha</div>
     <h1>El Agente IA de Gráfica Cicero</h1>
-    <p class="lead">Hola Marcya 👋 Acá está todo en un solo lugar: el presupuesto que aceptaste,
+    <p class="lead">Hola Alejandro 👋 Acá está todo en un solo lugar: el presupuesto aceptado,
       lo que necesitamos de ustedes y el formulario para pasárnoslo. Podés completarlo de a poco
       — se guarda solo en este dispositivo.</p>
   </div>
@@ -232,31 +236,7 @@
     </div>
   </section>
 
-  <!-- ═══ 3. LO QUE YA SABEMOS ═══ -->
-  <section>
-    <div class="card">
-      <h2><span class="num">3.</span> Lo que ya tenemos cargado</h2>
-      <p class="sub">Esto salió de la ficha que completaron en julio. Miralo y si algo cambió,
-        corregilo en el formulario (primera pregunta).</p>
-      <div class="datos">
-        <div class="dato"><div class="k">Negocio</div><div class="v">Gráfica Cicero</div></div>
-        <div class="dato"><div class="k">Tu agente se llama</div><div class="v">Grafo</div></div>
-        <div class="dato"><div class="k">Dirección</div><div class="v">Avay (2ª proy.) c/ General Díaz</div></div>
-        <div class="dato"><div class="k">Horario</div><div class="v">Lun a Vie · 07:30 a 18:00</div></div>
-        <div class="dato"><div class="k">Fin de semana</div><div class="v">Cerrado</div></div>
-        <div class="dato"><div class="k">Tono del agente</div><div class="v">Profesional y cordial, de vos</div></div>
-        <div class="dato"><div class="k">Único precio cargado</div><div class="v">Banner de lona — Gs. 410.000</div></div>
-        <div class="dato"><div class="k">Deriva hoy a</div><div class="v">0981 413 380 (Mercedes)</div></div>
-      </div>
-      <div class="aviso">
-        <b>Dos cosas para confirmar sí o sí:</b> (1) el banner de lona es el único precio que tenemos —
-        sin la lista completa, Grafo va a tomar el pedido pero no va a poder cotizar;
-        (2) las derivaciones hoy van al número de Mercedes — decinos si tienen que ir al tuyo.
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══ 4. FORMULARIO ═══ -->
+  <!-- ═══ 3. FORMULARIO ═══ -->
   <section id="form">
     <div class="barra">
       <div class="wrap">
@@ -266,7 +246,7 @@
     </div>
 
     <div class="card">
-      <h2><span class="num">4.</span> La información de tu negocio</h2>
+      <h2><span class="num">3.</span> La información de tu negocio</h2>
       <p class="sub">Ninguna respuesta es obligatoria — mandá lo que tengas y después completamos el resto.
         Las marcadas <b>CLAVE</b> son las que más cambian lo que Grafo puede resolver solo.</p>
 
@@ -275,12 +255,17 @@
         <fieldset>
           <legend>Quién completa</legend>
           <div class="campo">
-            <label for="contacto">Tu nombre y rol</label>
-            <input type="text" id="contacto" name="contacto" placeholder="Marcya Acosta — dueña">
+            <label for="contacto">Nombre y apellido</label>
+            <input type="text" id="contacto" name="contacto" class="precargado" value="Alejandro Acosta">
+          </div>
+          <div class="campo">
+            <label for="rol">Tu rol en la empresa
+              <span class="hint">Para saber con quién estoy hablando y qué decisiones podés validar.</span></label>
+            <input type="text" id="rol" name="rol" placeholder="Ej: socio, encargado de producción, administración…">
           </div>
           <div class="campo">
             <label for="whatsapp">WhatsApp de contacto</label>
-            <input type="tel" id="whatsapp" name="whatsapp" placeholder="0982 804 706">
+            <input type="tel" id="whatsapp" name="whatsapp" placeholder="0982 000 000">
           </div>
           <div class="campo">
             <label for="email">Email <span class="hint">Para mandarte accesos y la factura</span></label>
@@ -289,12 +274,42 @@
         </fieldset>
 
         <fieldset>
-          <legend>Datos base</legend>
-          <p class="fs-sub">Mirá el bloque 3 de arriba.</p>
+          <legend>Los datos que ya tenemos</legend>
+          <p class="fs-sub">Esto salió de la ficha que completaron en julio, y ya está escrito
+            en cada campo. <b>Corregí directamente arriba de lo que dice</b> lo que haya cambiado;
+            lo que esté bien, dejalo como está.</p>
           <div class="campo">
-            <label for="correcciones">¿Hay algo ahí que esté mal o que haya cambiado?
-              <span class="hint">Horario, dirección, el nombre del agente, a quién van las derivaciones… Si está todo bien, escribí "todo correcto".</span></label>
-            <textarea id="correcciones" name="correcciones" placeholder="Ej: el horario los viernes ahora es hasta las 17:00. Las derivaciones tienen que venir a mi número, no al de mi mamá."></textarea>
+            <label for="base_negocio">Nombre del negocio</label>
+            <input type="text" id="base_negocio" name="base_negocio" class="precargado" value="Gráfica Cicero">
+          </div>
+          <div class="campo">
+            <label for="base_agente">Cómo se llama el agente
+              <span class="hint">Con este nombre se va a presentar a tus clientes. Si prefieren otro, cambialo.</span></label>
+            <input type="text" id="base_agente" name="base_agente" class="precargado" value="Grafo">
+          </div>
+          <div class="campo">
+            <label for="base_direccion">Dirección</label>
+            <input type="text" id="base_direccion" name="base_direccion" class="precargado" value="Avay (2ª proy.) c/ General Díaz, Asunción">
+          </div>
+          <div class="campo">
+            <label for="base_horario">Horario de atención</label>
+            <input type="text" id="base_horario" name="base_horario" class="precargado" value="Lunes a viernes de 07:30 a 18:00. Sábados y domingos cerrado.">
+          </div>
+          <div class="campo">
+            <label for="base_tono">Tono con el que atiende</label>
+            <input type="text" id="base_tono" name="base_tono" class="precargado" value="Profesional y cordial, de vos">
+          </div>
+          <div class="campo">
+            <label for="base_derivacion">A qué número deriva cuando hace falta una persona
+              <span class="hint">Hoy figura el de Mercedes. Si las consultas de la gráfica las
+                atiende otra persona, cambialo por ese número.</span></label>
+            <input type="text" id="base_derivacion" name="base_derivacion" class="precargado" value="0981 413 380 (Mercedes)">
+          </div>
+          <div class="campo">
+            <label for="base_precio">El único precio que tenemos cargado
+              <span class="hint">Es lo único que Grafo puede cotizar hoy. La lista completa va
+                en la sección de precios, más abajo — es lo más importante del formulario.</span></label>
+            <input type="text" id="base_precio" name="base_precio" class="precargado" value="Banner de lona con porta banner — Gs. 410.000">
           </div>
         </fieldset>
 
@@ -452,10 +467,10 @@
     </div>
   </section>
 
-  <!-- ═══ 5. POR WHATSAPP ═══ -->
+  <!-- ═══ 4. POR WHATSAPP ═══ -->
   <section>
     <div class="card">
-      <h2><span class="num">5.</span> Los archivos, por WhatsApp</h2>
+      <h2><span class="num">4.</span> Los archivos, por WhatsApp</h2>
       <p class="sub">Esto no entra en un formulario. Mandámelo directo al WhatsApp y listo.</p>
       <ul class="lista">
         <li><span class="b">→</span><span><b>El logo de Gráfica Cicero</b> en la mejor calidad que tengan — vectorial (.ai, .eps, .pdf) o PNG grande.</span></li>
@@ -470,10 +485,10 @@
     </div>
   </section>
 
-  <!-- ═══ 6. LA REUNIÓN ═══ -->
+  <!-- ═══ 5. LA REUNIÓN ═══ -->
   <section>
     <div class="card">
-      <h2><span class="num">6.</span> Lo que vemos juntos en la videollamada</h2>
+      <h2><span class="num">5.</span> Lo que vemos juntos en la videollamada</h2>
       <p class="sub">30 minutos, una sola vez. Son las cosas que necesitan a alguien del otro lado en el momento.</p>
       <ul class="lista">
         <li><span class="b">→</span><span><b>Los accesos a Meta Business.</b> Te guío paso a paso para darme los permisos sobre tu cuenta.

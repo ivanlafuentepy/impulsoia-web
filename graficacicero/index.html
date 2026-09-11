@@ -108,6 +108,16 @@
   input.precargado{background:var(--amber-soft);border-color:#f0dcb4;font-weight:600}
   input.precargado:focus{background:#fff}
 
+  input[type=file]{width:100%;font-family:inherit;font-size:.9rem;color:var(--ink2);
+    background:#fff;border:1.5px dashed var(--line);border-radius:12px;padding:14px;cursor:pointer}
+  input[type=file]:hover{border-color:var(--amber)}
+  input[type=file]::file-selector-button{font-family:inherit;font-size:.86rem;font-weight:700;
+    color:#2a2419;background:var(--amber-soft);border:1px solid #f0dcb4;border-radius:9px;
+    padding:8px 14px;margin-right:12px;cursor:pointer}
+  .archivo-estado{font-size:.86rem;margin-top:7px;display:none}
+  .archivo-estado.ok{display:block;color:var(--green);font-weight:600}
+  .archivo-estado.err{display:block;color:#9c2b2b;font-weight:600}
+
   .acciones{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:24px}
   button{font-family:inherit;font-size:1rem;font-weight:700;border:none;border-radius:14px;
     padding:15px 28px;cursor:pointer;transition:transform .16s,box-shadow .16s,background .16s}
@@ -125,10 +135,13 @@
   .lista{list-style:none;display:grid;gap:11px}
   .lista li{display:flex;gap:11px;align-items:flex-start;font-size:.95rem}
   .lista li .b{flex-shrink:0;color:var(--amber-dark);font-weight:800}
-  a.btn-wa{display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;
-    text-decoration:none;font-weight:700;padding:15px 26px;border-radius:14px;margin-top:20px;
-    box-shadow:0 4px 14px rgba(37,211,102,.3);transition:transform .16s,box-shadow .16s}
-  a.btn-wa:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(37,211,102,.4)}
+  a.btn-mail{display:inline-flex;align-items:center;gap:10px;background:var(--amber);
+    color:#2a2419;text-decoration:none;font-weight:700;padding:15px 26px;border-radius:14px;
+    margin-top:20px;box-shadow:0 4px 14px rgba(245,165,36,.3);
+    transition:transform .16s,box-shadow .16s}
+  a.btn-mail:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(245,165,36,.4)}
+  .mail-nota{font-size:.86rem;color:var(--ink3);margin-top:12px}
+  .mail-nota b{color:var(--ink2)}
 
   footer{text-align:center;padding:40px 0 54px;color:var(--ink3);font-size:.85rem;line-height:1.7}
   footer a{color:var(--ink2)}
@@ -335,6 +348,13 @@
             <textarea id="precios" name="precios" rows="7" placeholder="Tarjetas personales 1000 unidades — Gs. XXX&#10;Tarjetas personales 500 unidades — Gs. XXX&#10;Volantes A5 full color 1000 — Gs. XXX&#10;Lona impresa por m² — Gs. XXX&#10;Banner de lona con porta banner — Gs. 410.000&#10;..."></textarea>
           </div>
           <div class="campo">
+            <label for="archivo_precios">¿La tenés en un archivo? Subila y listo
+              <span class="hint">Excel, CSV o PDF, hasta 4 MB. Si subís la lista no hace falta
+                que la tipees arriba — con el archivo alcanza.</span></label>
+            <input type="file" id="archivo_precios" accept=".xlsx,.xls,.csv,.pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv,application/pdf">
+            <div class="archivo-estado" id="archivoEstado"></div>
+          </div>
+          <div class="campo">
             <label for="disenio">¿Diseñan ustedes el arte? ¿Se cobra aparte?
               <span class="hint">Si el cliente no trae el diseño hecho, ¿qué pasa? ¿Cuánto sale?</span></label>
             <textarea id="disenio" name="disenio" placeholder="Ej: sí, diseñamos. Diseño simple Gs. XXX, diseño desde cero Gs. XXX. Si el cliente trae el arte listo no se cobra."></textarea>
@@ -470,18 +490,20 @@
   <!-- ═══ 4. POR WHATSAPP ═══ -->
   <section>
     <div class="card">
-      <h2><span class="num">4.</span> Los archivos, por WhatsApp</h2>
-      <p class="sub">Esto no entra en un formulario. Mandámelo directo al WhatsApp y listo.</p>
+      <h2><span class="num">4.</span> Los archivos, por email</h2>
+      <p class="sub">Estos pesan o vienen en varios formatos, así que van por correo.
+        Mandalos todos juntos en un solo mail y listo.</p>
       <ul class="lista">
         <li><span class="b">→</span><span><b>El logo de Gráfica Cicero</b> en la mejor calidad que tengan — vectorial (.ai, .eps, .pdf) o PNG grande.</span></li>
         <li><span class="b">→</span><span><b>2 o 3 fotos de trabajos</b> que estén orgullosos de mostrar. Van en tu página web.</span></li>
-        <li><span class="b">→</span><span><b>La lista de precios</b> si la tienen en Excel o PDF — así no la tipeás de nuevo arriba.</span></li>
         <li><span class="b">→</span><span><b>Catálogos o materiales</b> comerciales que ya usen.</span></li>
         <li><span class="b">→</span><span><b>Colores y tipografías</b> de la marca, si los tienen definidos.</span></li>
       </ul>
-      <a class="btn-wa" href="https://wa.me/595982790407?text=Hola%20Iv%C3%A1n%2C%20soy%20de%20Gr%C3%A1fica%20Cicero.%20Te%20mando%20los%20archivos%20para%20el%20agente." target="_blank" rel="noopener">
-        💬 Mandar los archivos por WhatsApp
+      <a class="btn-mail" href="mailto:ivanlafuente@impulsoia.org?subject=Gr%C3%A1fica%20Cicero%20%E2%80%94%20archivos%20para%20el%20Agente%20IA&amp;body=Hola%20Iv%C3%A1n%2C%0A%0ATe%20mando%20los%20archivos%20para%20la%20puesta%20en%20marcha%20del%20agente.%0A%0A">
+        ✉️ Escribir el mail con los archivos
       </a>
+      <p class="mail-nota">El botón abre tu correo con el asunto ya puesto.
+        Si preferís escribirlo a mano: <b>ivanlafuente@impulsoia.org</b></p>
     </div>
   </section>
 
@@ -511,7 +533,9 @@
   <div class="wrap">
     <b>Impulso IA</b> — La IA trabaja. Vos crecés.<br>
     Iván Lafuente · Asunción, Paraguay<br>
-    <a href="https://wa.me/595982790407">WhatsApp</a> · página privada de Gráfica Cicero SRL
+    <a href="mailto:ivanlafuente@impulsoia.org">ivanlafuente@impulsoia.org</a> ·
+    <a href="https://wa.me/595982790407">WhatsApp</a><br>
+    página privada de Gráfica Cicero SRL
   </div>
 </footer>
 
@@ -520,8 +544,58 @@
   "use strict";
 
   var form   = document.getElementById("onb");
-  var campos = Array.prototype.slice.call(form.querySelectorAll("input, textarea"));
+  // El input de archivo queda fuera: su .value es "C:\fakepath\…", no sirve ni
+  // para guardar, ni para contar progreso, ni para mandar.
+  var campos = Array.prototype.slice.call(form.querySelectorAll("input:not([type=file]), textarea"));
   var CLAVE  = "cicero-onboarding-v1";
+
+  // ── Archivo de la lista de precios ────────────────────────────────────
+  var MAX_ARCHIVO = 4 * 1024 * 1024;      // 4 MB
+  var inputArchivo = document.getElementById("archivo_precios");
+  var estadoArchivo = document.getElementById("archivoEstado");
+  var archivo = null;                     // {nombre, tipo, b64}
+
+  function kb(n){ return n < 1024*1024
+    ? Math.round(n/1024) + " KB"
+    : (n/1024/1024).toFixed(1) + " MB"; }
+
+  inputArchivo.addEventListener("change", function(){
+    archivo = null;
+    var f = inputArchivo.files && inputArchivo.files[0];
+    if(!f){ estadoArchivo.className = "archivo-estado"; return; }
+
+    if(f.size > MAX_ARCHIVO){
+      estadoArchivo.className = "archivo-estado err";
+      estadoArchivo.textContent = "Ese archivo pesa " + kb(f.size) +
+        " y el máximo es 4 MB. Mandámelo por email y lo cargo yo.";
+      inputArchivo.value = "";
+      return;
+    }
+
+    estadoArchivo.className = "archivo-estado";
+    estadoArchivo.style.display = "block";
+    estadoArchivo.textContent = "Leyendo " + f.name + "…";
+
+    var lector = new FileReader();
+    lector.onload = function(){
+      // readAsDataURL da "data:<tipo>;base64,XXXX" — nos quedamos con XXXX.
+      var partes = String(lector.result).split(",");
+      archivo = {
+        nombre: f.name,
+        tipo: f.type || "application/octet-stream",
+        b64: partes[1] || "",
+      };
+      estadoArchivo.className = "archivo-estado ok";
+      estadoArchivo.textContent = "✓ " + f.name + " (" + kb(f.size) +
+        ") — se manda cuando toques el botón de abajo";
+    };
+    lector.onerror = function(){
+      archivo = null;
+      estadoArchivo.className = "archivo-estado err";
+      estadoArchivo.textContent = "No se pudo leer el archivo. Probá con otro.";
+    };
+    lector.readAsDataURL(f);
+  });
 
   // ── Autoguardado local ────────────────────────────────────────────────
   // Es un formulario largo: nadie lo completa de una sentada. Si se cierra la
@@ -587,8 +661,9 @@
 
     var datos = {};
     campos.forEach(function(c){ datos[c.name] = c.value.trim(); });
+    if(archivo) datos.archivo = archivo;
 
-    var algo = campos.some(function(c){ return c.value.trim() !== ""; });
+    var algo = campos.some(function(c){ return c.value.trim() !== ""; }) || !!archivo;
     if(!algo){
       res.className = "resultado err";
       res.textContent = "Completá al menos una respuesta antes de enviar.";
@@ -609,9 +684,25 @@
     .then(function(r){
       if(!r.ok || !r.body.ok) throw new Error((r.body && r.body.error) || "No se pudo enviar");
       res.className = "resultado ok";
-      res.innerHTML = "<b>¡Listo, llegó!</b> Iván ya recibió lo que mandaste. " +
+      // El servidor dice si el adjunto entró de verdad: si falló, la persona
+      // tiene que enterarse ahora, no cuando Iván le pregunte por el Excel.
+      var falloArchivo = archivo && r.body.archivo === false;
+      res.innerHTML = "<b>¡Listo, llegó!</b> Iván ya recibió lo que mandaste" +
+        (archivo && !falloArchivo ? ", con el archivo incluido" : "") + ". " +
         "Podés seguir completando lo que falte y volver a enviar cuando quieras — " +
-        "tus respuestas siguen guardadas acá.";
+        "tus respuestas siguen guardadas acá." +
+        (falloArchivo
+          ? "<br><br>⚠️ <b>El archivo no se pudo adjuntar.</b> Todo lo demás quedó guardado — " +
+            "mandale la lista por email a <a href='mailto:ivanlafuente@impulsoia.org'>" +
+            "ivanlafuente@impulsoia.org</a>."
+          : "");
+      // El archivo ya viajó: lo soltamos para que un segundo envío no lo
+      // suba de nuevo y queden dos copias colgando del mismo registro.
+      if(archivo){
+        archivo = null;
+        inputArchivo.value = "";
+        estadoArchivo.className = "archivo-estado";
+      }
       btn.textContent = "Enviar de nuevo";
       btn.disabled = false;
     })

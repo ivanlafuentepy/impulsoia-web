@@ -20,7 +20,11 @@ const EMPRESA  = "Gráfica Cicero SRL";
 const TEL_IVAN = "595982790407";
 const DORITA   = "https://salsa-soul-dorita-production.up.railway.app";
 
-const MAX_BYTES = 60000;   // el formulario más largo imaginable entra holgado
+// El formulario en texto entra en unos pocos KB; el resto del margen es para
+// el base64 de la lista de precios (4 MB de archivo ≈ 5,4 MB en base64).
+const MAX_BYTES = 7 * 1024 * 1024;
+const MAX_ARCHIVO_B64 = 6 * 1024 * 1024;
+const CAMPO_ARCHIVO = "fldiBqPdqTWAPeqpG";   // Lista de precios (archivo)
 
 // Los datos que la landing muestra YA CARGADOS en el campo, para que la persona
 // corrija encima en vez de tener que mirar arriba y describir el cambio abajo.
@@ -145,6 +149,21 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: "Formato inválido." }, 400);
   }
 
+  // El archivo sale primero: es el único valor que no es texto plano y no
+  // puede pasar por el recorte de abajo, que lo dejaría corrupto a la mitad.
+  const arch = datos.archivo;
+  let archivo = null;
+  if (arch && typeof arch === "object" && typeof arch.b64 === "string" && arch.b64) {
+    if (arch.b64.length > MAX_ARCHIVO_B64) {
+      return json({ ok: false, error: "El archivo es demasiado grande (máximo 4 MB)." }, 413);
+    }
+    archivo = {
+      nombre: String(arch.nombre || "lista-de-precios").slice(0, 200),
+      tipo: String(arch.tipo || "application/octet-stream").slice(0, 120),
+      b64: arch.b64,
+    };
+  }
+
   // Normalizamos a texto: nada de objetos anidados llegando a Airtable.
   const d = {};
   for (const [k, v] of Object.entries(datos)) {
@@ -152,7 +171,8 @@ export async function onRequestPost({ request, env }) {
   }
 
   const hayAlgo =
-    CAMPOS.some(([c]) => d[c]) || BASE.some(([c]) => d[c]) || d.contacto || d.whatsapp || d.email;
+    CAMPOS.some(([c]) => d[c]) || BASE.some(([c]) => d[c]) ||
+    d.contacto || d.whatsapp || d.email || archivo;
   if (!hayAlgo) return json({ ok: false, error: "El formulario llegó vacío." }, 400);
 
   if (!env.AIRTABLE_TOKEN) {
@@ -205,12 +225,44 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: "No se pudo guardar. Probá de nuevo en un minuto." }, 502);
   }
 
+  // ── 3b. Adjuntar la lista de precios al registro ─────────────────────
+  // Va en una llamada aparte (content.airtable.com) porque la API de records
+  // no recibe binarios. Si falla, el resto del formulario ya está guardado:
+  // se lo decimos a la persona para que lo mande por email, en vez de perderlo.
+  let archivoOk = null;
+  if (archivo && recordId) {
+    try {
+      const r = await fetch(
+        `https://content.airtable.com/v0/${BASE_ID}/${recordId}/${CAMPO_ARCHIVO}/uploadAttachment`,
+        {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${env.AIRTABLE_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            contentType: archivo.tipo,
+            filename: archivo.nombre,
+            file: archivo.b64,
+          }),
+        }
+      );
+      archivoOk = r.ok;
+      if (!r.ok) console.error("[ONBOARDING] Adjunto rechazado:", r.status, await r.text());
+    } catch (e) {
+      archivoOk = false;
+      console.error("[ONBOARDING] Adjunto no subió:", e);
+    }
+  }
+
   // ── 4. Avisar a Iván (best-effort: nunca rompe el guardado) ──────────
   const completos = CAMPOS.filter(([c]) => d[c]).length;
   const aviso =
     `📋 ONBOARDING — ${EMPRESA}\n\n` +
-    `${d.contacto || "Sin nombre"} completó ${completos} de ${CAMPOS.length} respuestas.\n` +
+    `${quien || "Sin nombre"} completó ${completos} de ${CAMPOS.length} respuestas.\n` +
     (d.whatsapp ? `WhatsApp: ${d.whatsapp}\n` : "") +
+    (archivoOk === true  ? `📎 Subió la lista de precios: ${archivo.nombre}\n` : "") +
+    (archivoOk === false ? `⚠️ Intentó subir ${archivo.nombre} y NO se pudo adjuntar.\n` : "") +
     `\nEstá en Airtable → IMPULSO IA → ONBOARDING CLIENTES.`;
 
   if (env.DORITA_DEBUG_TOKEN) {
@@ -224,7 +276,7 @@ export async function onRequestPost({ request, env }) {
     }
   }
 
-  return json({ ok: true, id: recordId });
+  return json({ ok: true, id: recordId, archivo: archivoOk });
 }
 
 // Solo se exporta onRequestPost: Pages responde 405 solo a cualquier otro método.

@@ -1,0 +1,5 @@
+# Cloudflare Pages — redirecciones
+# La landing de Gráfica Cicero nació en una URL secreta y el 11/09 pasó a
+# /graficacicero. Ese link viejo ya circuló por WhatsApp y el edge seguía
+# sirviendo una copia vieja de la página, así que se manda al nuevo.
+/cicero-f84e6c615624/*  /graficacicero/:splat  301

@@ -53,7 +53,7 @@ const PENDIENTE_REUNION = [
   "Recorrido del flujo de toma de pedidos",
   "Límites del agente: qué decide solo y cuándo deriva",
   "Archivos: logo, fotos de trabajos, lista de precios, catálogos (llegan por WhatsApp)",
-  "Saldo inicial de USD 10 para el consumo de API",
+  "Modalidad de pago del consumo de API: lo habla Iván en persona — a propósito NO está en la landing",
 ].map((x) => "• " + x).join("\n");
 
 const json = (obj, status = 200) =>

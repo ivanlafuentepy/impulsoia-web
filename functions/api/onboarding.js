@@ -24,31 +24,36 @@ const MAX_BYTES = 60000;   // el formulario más largo imaginable entra holgado
 
 // Cada campo del form → su columna en Airtable. El orden es el del Brief.
 const CAMPOS = [
-  ["correcciones", "Correcciones a los datos base",           "Correcciones a los datos que ya teníamos"],
-  ["precios",      "Productos y precios",                     "Productos y precios"],
-  ["disenio",      "Diseño propio",                           "¿Diseñan ellos? ¿Se cobra aparte?"],
-  ["plazos",       "Plazos de producción",                    "Plazos de producción"],
-  ["arte",         "Formato de arte",                         "Cómo tienen que mandar el arte"],
-  ["senia",        "Seña y formas de pago",                   "Seña y formas de pago"],
-  ["entrega",      "Entrega",                                 "Retiro o delivery"],
-  ["faq",          "Preguntas frecuentes",                    "Las preguntas de todos los días"],
-  ["estados",      "Estados de producción",                   "Estados de un pedido"],
-  ["comunica",     "Qué comunica el agente en cada estado",   "Qué puede decir el agente en cada estado"],
-  ["derivacion",   "Responsable de derivaciones",             "Quién recibe las derivaciones"],
-  ["tono",         "Tono y estilo",                           "Cómo tiene que hablar el agente"],
-  ["publicos",     "Datos de contacto públicos",              "Datos de contacto públicos"],
-  ["otros",        "Otra información",                        "Otra información"],
+  ["correcciones",  "Correcciones a los datos base",          "Correcciones a los datos que ya teníamos"],
+  ["numero_agente", "Número de WhatsApp del agente",          "El número que va a usar el agente"],
+  ["precios",       "Productos y precios",                    "Productos y precios"],
+  ["disenio",       "Diseño propio",                          "¿Diseñan ellos? ¿Se cobra aparte?"],
+  ["plazos",        "Plazos de producción",                   "Plazos de producción"],
+  ["arte",          "Formato de arte",                        "Cómo tienen que mandar el arte"],
+  ["senia",         "Seña y formas de pago",                  "Seña y formas de pago"],
+  ["entrega",       "Entrega",                                "Retiro o delivery"],
+  ["faq",           "Preguntas frecuentes",                   "Las preguntas de todos los días"],
+  ["estados",       "Estados de producción",                  "Estados de un pedido"],
+  ["comunica",      "Qué comunica el agente en cada estado",  "Qué puede decir el agente en cada estado"],
+  ["derivacion",    "Responsable de derivaciones",            "Quién recibe las derivaciones"],
+  ["tono",          "Tono y estilo",                          "Cómo tiene que hablar el agente"],
+  ["admins",        "Administradores del agente",             "Administradores del agente (modo dueño)"],
+  ["panel",         "Acceso al panel de control",             "Acceso al panel de control"],
+  ["responsable",   "Responsable del proyecto",               "Responsable del proyecto"],
+  ["facturacion",   "Datos de facturación",                   "Datos de facturación"],
+  ["publicos",      "Datos de contacto públicos",             "Datos de contacto públicos"],
+  ["otros",         "Otra información",                       "Otra información"],
 ];
 
 // Lo que el formulario no puede resolver: queda escrito en la fila para que no
 // se pierda de vista al armar el agente.
 const PENDIENTE_REUNION = [
   "Accesos a Meta Business (permisos + códigos de verificación en vivo)",
-  "Definición del número de WhatsApp que usará el agente",
+  "Validar la modalidad de conexión si el número ya está en uso en WhatsApp",
   "Recorrido del flujo de toma de pedidos",
   "Límites del agente: qué decide solo y cuándo deriva",
-  "Quiénes del equipo entran al panel de control",
   "Archivos: logo, fotos de trabajos, lista de precios, catálogos (llegan por WhatsApp)",
+  "Saldo inicial de USD 10 para el consumo de API",
 ].map((x) => "• " + x).join("\n");
 
 const json = (obj, status = 200) =>

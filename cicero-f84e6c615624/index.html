@@ -188,9 +188,10 @@
       </div>
 
       <div class="aviso">
-        El consumo de la API de IA (estimado <b>USD 5 a 10 por mes</b> para 10–30 clientes por día)
-        va aparte del mensual y se cobra según el uso real. Lo vas a poder ver día por día
-        desde tu panel de control.
+        <b>El consumo de IA funciona con saldo, aparte del mensual.</b> Entregás un saldo inicial
+        de <b>USD 10</b> y se va descontando solo según el uso real del agente; cuando se agota,
+        se pide una carga nueva de USD 10. Nosotros lo administramos y lo abonamos por cuenta de
+        ustedes, y vos ves el consumo y su costo día por día desde tu panel de control.
       </div>
     </div>
   </section>
@@ -226,6 +227,12 @@
           </div>
         </div>
       </div>
+      <div class="aviso">
+        <b>Una aclaración sobre el plazo:</b> el reloj de las 48 h se pausa mientras falte
+        información, falte una validación o no haya respuesta de la persona responsable del
+        proyecto, y vuelve a correr cuando se resuelve. No es una penalidad: es para que el
+        plazo dependa de lo que sí podemos controlar.
+      </div>
     </div>
   </section>
 
@@ -258,7 +265,7 @@
     <div class="barra">
       <div class="wrap">
         <div class="prog"><i id="progBar"></i></div>
-        <div class="prog-txt"><span id="progTxt">0</span> de 15</div>
+        <div class="prog-txt"><span id="progTxt">0</span> de <span id="progTotal">–</span></div>
       </div>
     </div>
 
@@ -292,6 +299,20 @@
             <label for="correcciones">¿Hay algo ahí que esté mal o que haya cambiado?
               <span class="hint">Horario, dirección, el nombre del agente, a quién van las derivaciones… Si está todo bien, escribí "todo correcto".</span></label>
             <textarea id="correcciones" name="correcciones" placeholder="Ej: el horario los viernes ahora es hasta las 17:00. Las derivaciones tienen que venir a mi número, no al de mi mamá."></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>El número del agente <span class="clave">Clave</span></legend>
+          <p class="fs-sub">Esto define cuándo podemos arrancar con Meta. Si lo dejás para
+            después, el plazo no corre.</p>
+          <div class="campo">
+            <label for="numero_agente">¿Qué número va a usar Grafo, y hoy está en uso?
+              <span class="hint">Decinos el número definitivo y si ese número <b>ya se está
+              usando</b> en WhatsApp normal o WhatsApp Business. No es un problema que esté en
+              uso — pero necesitamos saberlo antes de tocar nada, porque cambia la forma de
+              conectarlo. Enterarnos en el momento es lo que genera demoras.</span></label>
+            <textarea id="numero_agente" name="numero_agente" placeholder="Ej: 0982 804 706. Hoy lo usamos con WhatsApp Business normal, es el que está en las tarjetas.&#10;O: vamos a sacar una línea nueva, todavía no la tenemos."></textarea>
           </div>
         </fieldset>
 
@@ -378,6 +399,43 @@
         </fieldset>
 
         <fieldset>
+          <legend>Quién manda sobre el agente</legend>
+          <p class="fs-sub">Tres cosas distintas que se suelen confundir: quién <b>administra</b>
+            a Grafo desde WhatsApp, quién <b>entra al panel</b>, y quién <b>decide</b> durante
+            estos días de implementación.</p>
+          <div class="campo">
+            <label for="admins">Administradores por WhatsApp (modo dueño)
+              <span class="hint">Nombre y número de cada persona que va a poder manejar a Grafo
+                desde su propio WhatsApp: consultar datos de clientes, actualizar precios,
+                cambiar información. Es distinto del que recibe las derivaciones.</span></label>
+            <textarea id="admins" name="admins" placeholder="Ej: Marcya Acosta - 0982 804 706 (puede todo). Mercedes - 0981 413 380 (solo consultar, sin cambiar precios)."></textarea>
+          </div>
+          <div class="campo">
+            <label for="panel">¿Quiénes entran al panel de control?
+              <span class="hint">Cuántas personas, nombre y apellido de cada una, y a quién le
+                mandamos el PIN de acceso.</span></label>
+            <textarea id="panel" name="panel" placeholder="Ej: 2 personas. Marcya Acosta y Mercedes Cicero. El PIN se lo mandás a Marcya."></textarea>
+          </div>
+          <div class="campo">
+            <label for="responsable">¿Quién es el responsable del proyecto?
+              <span class="hint">La persona a la que le escribo si me trabo con una duda durante
+                la implementación, y su disponibilidad estos días. Si no hay respuesta, el
+                reloj de las 48 h se pausa.</span></label>
+            <textarea id="responsable" name="responsable" placeholder="Ej: Marcya Acosta - 0982 804 706. Disponible de 8 a 18, contesto rápido por WhatsApp."></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Facturación</legend>
+          <div class="campo">
+            <label for="facturacion">Datos para emitirte la factura
+              <span class="hint">RUC, razón social exacta, dirección fiscal, y a nombre de quién
+                o a qué área se envía.</span></label>
+            <textarea id="facturacion" name="facturacion" placeholder="Ej: RUC 80012345-6, GRÁFICA CICERO SRL, Avay c/ General Díaz, Asunción. Enviar a Marcya."></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
           <legend>Datos públicos y extras</legend>
           <div class="campo">
             <label for="publicos">Datos de contacto que pueden figurar en tu página web
@@ -426,12 +484,15 @@
       <ul class="lista">
         <li><span class="b">→</span><span><b>Los accesos a Meta Business.</b> Te guío paso a paso para darme los permisos sobre tu cuenta.
           <b>No necesito tu contraseña de Facebook</b> — se hace con permisos, no compartiendo claves.</span></li>
-        <li><span class="b">→</span><span><b>El número de WhatsApp del agente.</b> Definimos cuál usan y conectamos el número.
-          Durante la conexión Meta manda códigos de verificación, así que tiene que estar a mano alguien con permisos de administrador.</span></li>
+        <li><span class="b">→</span><span><b>La conexión del número.</b> Con el dato que nos pasás en el formulario ya sabemos
+          cómo conectarlo. Durante la conexión Meta manda códigos de verificación, así que tiene que estar
+          a mano alguien con permisos de administrador.</span></li>
         <li><span class="b">→</span><span><b>Cómo toma los pedidos.</b> Recorremos juntos las preguntas que va a hacer según el producto,
           para que no pregunte de más ni de menos.</span></li>
         <li><span class="b">→</span><span><b>Los límites de Grafo.</b> Qué decide solo y en qué casos siempre llama a una persona.</span></li>
-        <li><span class="b">→</span><span><b>Quién del equipo entra al panel</b> y cómo se toma una conversación cuando quieran contestar a mano.</span></li>
+        <li><span class="b">→</span><span><b>El panel por dentro.</b> Cómo se mira una conversación en vivo y cómo se la toma
+          para contestar a mano cuando quieran.</span></li>
+        <li><span class="b">→</span><span><b>El saldo de USD 10</b> para el consumo de IA: cómo se carga y dónde se ve lo que se va gastando.</span></li>
       </ul>
     </div>
   </section>
@@ -491,6 +552,9 @@
   var barra = document.getElementById("progBar");
   var txt   = document.getElementById("progTxt");
   var TOTAL = campos.length;
+  // El total sale de los campos que existen: si mañana se agrega o se saca una
+  // pregunta, el contador no queda mintiendo.
+  document.getElementById("progTotal").textContent = TOTAL;
 
   function progreso(){
     var hechos = campos.filter(function(c){ return c.value.trim() !== ""; }).length;
